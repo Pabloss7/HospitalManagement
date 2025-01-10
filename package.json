@@ -15,7 +15,9 @@
   "author": "Pablo Sánchez",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "junit": "^1.4.9",
     "sqlite3": "^5.1.7",
     "typescript": "^5.7.3"

@@ -18,6 +18,12 @@ const setupDatabase = () => {
                 console.log('User table created or existing');
             }
         });
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS appointments (
+            
+            )
+            `);
     });
 };
 
