@@ -18,12 +18,31 @@ const setupDatabase = () => {
                 console.log('User table created or existing');
             }
         });
-
         db.run(`
-            CREATE TABLE IF NOT EXISTS appointments (
-            
+            CREATE TABLE IF NOT EXISTS medical_records (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              patient_id INTEGER NOT NULL,
+              doctor_id INTEGER NOT NULL,
+              diagnosis TEXT,
+              prescriptions TEXT,
+              notes TEXT,
+              test_results TEXT,
+              treatments TEXT,
+              FOREIGN KEY(patient_id) REFERENCES users(id),
+              FOREIGN KEY(doctor_id) REFERENCES users(id)
             )
-            `);
+          `, (err) => {
+            if (err) {
+              console.error('Error al crear la tabla de registros médicos:', err.message);
+            } else {
+              console.log('Tabla de registros médicos creada o existente.');
+            }
+          });
+        // db.run(`
+        //     CREATE TABLE IF NOT EXISTS appointments (
+            
+        //     )
+        //     `);
     });
 };
 

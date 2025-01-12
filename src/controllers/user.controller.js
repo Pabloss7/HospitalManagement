@@ -1,13 +1,12 @@
 const userRepository = require('../repositories/user.repository');
+const UserService = require('../services/user.service');
+
 
 const createUser = async (req,res) => {
     try{
-        const user = await userRepository.createUser(
-            req.body.username,
-            req.body.password,
-            req.body.role,
-            req.body.details
-        );
+        const { username, password, role, details} = req.body;
+
+        const user =  await UserService.createUser(username, password, role, details);
         res.status(201).json(user);
     }catch(error){
         res.status(400).json({message: error});
