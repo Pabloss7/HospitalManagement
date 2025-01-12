@@ -29,6 +29,19 @@ const getMyRecords = async (req, res) => {
     }
 };
 
+const getRecordsByDoctor = async (req, res) => {
+    try{
+        const doctor_id = req.user.id;
+        console.log("Doctor ID:", doctor_id);
+
+        const records = await medicalRecordService.getRecordByDoctorId(doctor_id);
+        res.status(200).json(records);
+    }catch(error){
+        console.log("Error in getRecordsByDoctor =>",error.message);
+        res.status(400).json({ message: error.message});
+    }
+}
+
 const updateRecord = async(req, res) => {
     try {
         const updates = {
@@ -45,4 +58,4 @@ const updateRecord = async(req, res) => {
     }
 };
 
-module.exports = { createRecord, getMyRecords, updateRecord };
+module.exports = { createRecord, getMyRecords, updateRecord ,getRecordsByDoctor };

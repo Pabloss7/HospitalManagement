@@ -47,6 +47,27 @@ const getRecordsByPatientId = (patient_id) => {
     });
 };
 
+const getRecordByDoctorId = (doctor_id) => {
+    return new Promise((resolve,reject) =>{
+        const query = `
+        SELECT * FROM medical_records
+        WHERE doctor_id = ?
+        `;
+        
+        console.log("Executing query for doctor ID:",doctor_id);
+
+        db.all(query, [doctor_id], (err, rows) => {
+            if(err){
+                console.log("Database error:", err.message);
+                reject(err.message);
+            }else{
+                console.log("Query result:", rows);
+                resolve(rows);
+            }
+        });
+    });
+};
+
 const updateRecord = (id, updates) => {
     return new Promise((resolve, reject) => {
         const query = `
@@ -75,4 +96,4 @@ const updateRecord = (id, updates) => {
     });
 };
 
-module.exports = { createRecord, getRecordsByPatientId, updateRecord };
+module.exports = { createRecord, getRecordsByPatientId, updateRecord , getRecordByDoctorId};

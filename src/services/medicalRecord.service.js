@@ -18,4 +18,15 @@ const updateRecord = async (id, updates) => {
     return result;
 };
 
-module.exports = { createRecord, getRecordsByPatientId, updateRecord };
+const getRecordByDoctorId = async (doctor_id) =>{
+    console.log("Service triggeres for doctorID:", doctor_id);
+
+    const records  = await medicalRecordRepository.getRecordByDoctorId(doctor_id);
+    if(!records || records.length === 0){
+        throw new Error("No records found for this doctor");
+    }
+    
+    return records;
+}
+
+module.exports = { createRecord, getRecordsByPatientId, updateRecord ,getRecordByDoctorId};
