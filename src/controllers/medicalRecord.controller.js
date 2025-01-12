@@ -19,8 +19,10 @@ const createRecord = async (req, res) => {
 };
 
 const getMyRecords = async (req, res) => {
+    console.log("User ID:", req.user.id);
     try{
         const records = await medicalRecordService.getRecordsByPatientId(req.user.id);
+        console.log("RECORDS:", records);
         res.status(200).json(records);
     }catch( error ){
         res.status(400).json({ message: error.message});

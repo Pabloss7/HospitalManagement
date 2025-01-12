@@ -31,7 +31,7 @@ const createRecord =  (record) => {
     });
 };
 
-const getRecordsByPatientId = (patiendt_id) => {
+const getRecordsByPatientId = (patient_id) => {
     return new Promise((resolve, reject) => {
         const query = `
         SELECT * FROM medical_records

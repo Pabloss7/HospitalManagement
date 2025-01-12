@@ -10,8 +10,10 @@ app.use('/users',userRoutes);
 app.use('/auth',authRoutes);
 app.use('/medicalRecord', medicalRecordRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Bienvenido al sistema de gestión de citas y registros médicos.');
-  });
+
+app.use((err, req, res, next) => {
+    console.error("Unhandled Error:", err.stack);
+    res.status(err.status || 500).json({ message: err.message || 'Internal Server Error' });
+});
 
 module.exports = app;
