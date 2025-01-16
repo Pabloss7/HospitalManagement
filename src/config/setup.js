@@ -77,6 +77,48 @@ const setupDatabase = () => {
                 console.log('Availability table created or existing');
             }
         });
+        db.run(`
+            CREATE TABLE IF NOT EXISTS specialties (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE
+            )
+        `, (err) => {
+            if (err) {
+                console.error('Error creating specialties table:', err.message);
+            } else {
+                console.log('Specialties table created or existing');
+            }
+        });
+        
+        db.run(`
+            CREATE TABLE IF NOT EXISTS departments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE
+            )
+        `, (err) => {
+            if (err) {
+                console.error('Error creating departments table:', err.message);
+            } else {
+                console.log('Departments table created or existing');
+            }
+        });
+        
+        db.run(`
+            CREATE TABLE IF NOT EXISTS doctor_specialties (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                doctor_id INTEGER NOT NULL,
+                specialty_id INTEGER NOT NULL,
+                FOREIGN KEY(doctor_id) REFERENCES users(id),
+                FOREIGN KEY(specialty_id) REFERENCES specialties(id)
+            )
+        `, (err) => {
+            if (err) {
+                console.error('Error creating doctor_specialties table:', err.message);
+            } else {
+                console.log('Doctor Specialties table created or existing');
+            }
+        });
+        
     });
 };
 
