@@ -118,6 +118,22 @@ const setupDatabase = () => {
                 console.log('Doctor Specialties table created or existing');
             }
         });
+        db.run(`
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                action TEXT NOT NULL,
+                resource TEXT NOT NULL,
+                timestamp TEXT NOT NULL DEFAULT (datetime('now')),
+                FOREIGN KEY(user_id) REFERENCES users(id)
+            )
+        `, (err) => {
+            if (err) {
+                console.error('Error creating audit_logs table:', err.message);
+            } else {
+                console.log('Audit Logs table created or existing');
+            }
+        });
         
     });
 };

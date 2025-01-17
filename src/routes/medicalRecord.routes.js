@@ -4,9 +4,9 @@ const medicalRecordController = require('../controllers/medicalRecord.controller
 
 const { authenticate } = require('../middlewares/auth.middleware');
 
-router.post('/', authenticate(['doctor']), medicalRecordController.createRecord);
+router.post('/', authenticate(['doctor']), audit('CREATE', 'medical_record'), medicalRecordController.createRecord);
 router.get('/', authenticate(['patient','doctor','admin']), medicalRecordController.getMyRecords);
 router.get('/doctor',authenticate(['doctor', 'admin']), medicalRecordController.getRecordsByDoctor);
-router.put('/:id', authenticate(['doctor']), medicalRecordController.updateRecord);
+router.put('/:id', authenticate(['doctor']), audit('UPDATE', 'medical_record'), medicalRecordController.updateRecord);
 
 module.exports = router;
