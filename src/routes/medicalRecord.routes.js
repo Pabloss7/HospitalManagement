@@ -3,6 +3,7 @@ const router = express.Router();
 const medicalRecordController = require('../controllers/medicalRecord.controller');
 const { authenticate } = require('../middlewares/auth.middleware');
 const {notify} = require('../middlewares/notification.middleware');
+const {audit} = require('../middlewares/audit.middleware');
 
 router.post(
     '/',

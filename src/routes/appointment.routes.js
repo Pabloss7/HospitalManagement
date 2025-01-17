@@ -3,6 +3,7 @@ const router  = express.Router();
 const appointmentController  = require('../controllers/appointment.controller');
 const { authenticate } = require('../middlewares/auth.middleware');
 const {notify} = require('../middlewares/notification.middleware');
+const {audit } = require('../middlewares/audit.middleware');
 
 router.post(
     '/',
