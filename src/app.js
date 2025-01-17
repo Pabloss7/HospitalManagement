@@ -5,10 +5,17 @@ const medicalRecordRoutes = require('./routes/medicalRecord.routes');
 const appointmentRoutes = require('./routes/appointment.routes');
 const publicRoutes = require('./routes/public.routes');
 
+//documentation
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./src/openapi.yaml');
+
 const app = express();
+
 
 app.use(express.json());
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/users',userRoutes);
 app.use('/auth',authRoutes);
 app.use('/medicalRecord', medicalRecordRoutes);

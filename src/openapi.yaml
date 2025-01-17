@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  title: Healthcare Appointment and Records Management API
+  version: 1.0.0
+  description: API para la gestión de usuarios, citas, registros médicos, especialidades y notificaciones.
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+
+paths:
+  /auth/login:
+    post:
+      summary: Login de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: admin123
+      responses:
+        '200':
+          description: JWT Token generado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+  /users:
+    post:
+      summary: Crear un usuario
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: nuevo_usuario
+                password:
+                  type: string
+                  example: password123
+                role:
+                  type: string
+                  enum: [admin, doctor, patient]
+                  example: doctor
+                details:
+                  type: object
+                  example: { "email": "doctor@example.com" }
+      responses:
+        '201':
+          description: Usuario creado
+        '401':
+          description: No autorizado
+
+  /users/{id}:
+    get:
+      summary: Obtener usuario por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Datos del usuario
+        '404':
+          description: Usuario no encontrado
+
+  /appointments:
+    post:
+      summary: Crear una cita
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                doctor_id:
+                  type: integer
+                  example: 1
+                date:
+                  type: string
+                  format: date
+                  example: 2025-01-15
+                time:
+                  type: string
+                  example: "10:00"
+      responses:
+        '201':
+          description: Cita creada
+    get:
+      summary: Consultar citas del paciente
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de citas del paciente
+
+  /appointments/doctor:
+    get:
+      summary: Consultar citas del doctor
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de citas del doctor
+
+  /appointments/{id}:
+    put:
+      summary: Actualizar una cita
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  example: 2025-01-16
+                time:
+                  type: string
+                  example: "11:00"
+      responses:
+        '200':
+          description: Cita actualizada
+    delete:
+      summary: Cancelar una cita
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cita cancelada
+
+  /medicalRecord:
+    post:
+      summary: Crear un registro médico
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient_id:
+                  type: integer
+                  example: 6
+                diagnosis:
+                  type: string
+                  example: Influenza
+                prescriptions:
+                  type: array
+                  items:
+                    type: string
+                  example: [Paracetamol]
+                notes:
+                  type: string
+                  example: "El paciente tiene fiebre alta."
+      responses:
+        '201':
+          description: Registro médico creado
+
+  /public/doctors:
+    get:
+      summary: Obtener lista pública de doctores
+      responses:
+        '200':
+          description: Lista de doctores con sus especialidades
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    doctor_id:
+                      type: integer
+                    name:
+                      type: string
+                    specialties:
+                      type: string
+
+  /public/departments:
+    get:
+      summary: Obtener lista de departamentos públicos
+      responses:
+        '200':
+          description: Lista de departamentos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

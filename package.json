@@ -21,7 +21,9 @@
     "jsonwebtoken": "^9.0.2",
     "junit": "^1.4.9",
     "sqlite3": "^5.1.7",
-    "typescript": "^5.7.3"
+    "swagger-ui-express": "^5.0.1",
+    "typescript": "^5.7.3",
+    "yamljs": "^0.3.0"
   },
   "keywords": [],
   "devDependencies": {
