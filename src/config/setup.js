@@ -29,6 +29,38 @@ module.exports = (sequelize) => {
       defaultValue: 'patient'
     }
   });
-
-  return User;
+  const Department = sequelize.define('Department', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
+  });
+  const DoctorDepartment = sequelize.define('DoctorDepartment', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    }
+  });
+  
+  // Set up associations
+  User.belongsToMany(Department, {
+    through: DoctorDepartment,
+    foreignKey: 'userId',
+    otherKey: 'departmentId',
+    scope: {
+      role: 'doctor'
+    }
+  });
+  Department.belongsToMany(User, {
+    through: DoctorDepartment,
+    foreignKey: 'departmentId',
+    otherKey: 'userId'
+  });
+  return { User, Department, DoctorDepartment };
 };

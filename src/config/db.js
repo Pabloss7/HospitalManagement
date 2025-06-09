@@ -1,15 +1,22 @@
-const sqlite3 = require('sqlite3').verbose();
+const { Sequelize } = require('sequelize');
 
-// Create a new database instance
-const db = new sqlite3.Database('./hospital_management.db', (err) => {
-    if (err) {
-        console.error('Error connecting to database:', err.message);
-    } else {
-        console.log('Connected to SQLite database');
-    }
+// Create Sequelize instance
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './hospital_management.db',
+    logging: console.log
 });
 
-// Enable foreign keys
-db.run('PRAGMA foreign_keys = ON');
+// Test the connection
+async function testConnection() {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection to SQLite database has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
 
-module.exports = db;
+testConnection();
+
+module.exports = sequelize;
