@@ -12,32 +12,31 @@ class DoctorService {
 
         const processedSlots = [];
         for (const slot of availableSlots) {
-            // Validate time format and slot conflicts
-            const startTime = new Date(`${slot.date} ${slot.startTime}`);
-            const endTime = new Date(`${slot.date} ${slot.endTime}`);
-
-            if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
+            // Validate time format
+            const startDateTime = new Date(`${slot.date} ${slot.startTime}`);
+            if (isNaN(startDateTime.getTime())) {
                 throw new Error('Invalid date or time format');
             }
 
-            if (startTime >= endTime) {
-                throw new Error('Start time must be before end time');
-            }
+            // Calculate end time (20 minutes after start time)
+            const endDateTime = new Date(startDateTime.getTime() + 20 * 60000); // 20 minutes in milliseconds
+            const endTime = endDateTime.toTimeString().split(' ')[0]; // Get HH:MM:SS format
 
             // Check for conflicts with existing slots
             const conflicts = await Availability.findOne({
                 where: {
                     doctorId,
-                    Date: slot.date,  // Changed from date to Date
+                    Date: slot.date,
+                    isAvailable: true,
                     [Op.or]: [
                         {
                             startTime: {
-                                [Op.between]: [slot.startTime, slot.endTime]
+                                [Op.between]: [slot.startTime, endTime]
                             }
                         },
                         {
                             endTime: {
-                                [Op.between]: [slot.startTime, slot.endTime]
+                                [Op.between]: [slot.startTime, endTime]
                             }
                         }
                     ]
@@ -50,9 +49,9 @@ class DoctorService {
 
             const availability = await doctorRepository.createAvailability({
                 doctorId,
-                Date: slot.date,  // Changed from date to Date
+                Date: slot.date,
                 startTime: slot.startTime,
-                endTime: slot.endTime,
+                endTime: endTime,
                 isAvailable: true
             });
 
@@ -78,53 +77,49 @@ class DoctorService {
             throw new Error('Doctor not found');
         }
 
-        // Get all existing slots for this doctor
-        const existingSlots = await Availability.findAll({
-            where: {
-                doctorId,
-                isAvailable: true
-            }
-        });
-
         const processedSlots = [];
-        for (const newSlot of availableSlots) {
-            // Validate time format
-            const newStartTime = new Date(`${newSlot.date} ${newSlot.startTime}`);
-            const newEndTime = new Date(`${newSlot.date} ${newSlot.endTime}`);
-
-            if (isNaN(newStartTime.getTime()) || isNaN(newEndTime.getTime())) {
-                throw new Error('Invalid date or time format');
+        for (const slot of availableSlots) {
+            // Parse the date and time separately
+            const dateObj = new Date(slot.date);
+            if (isNaN(dateObj.getTime())) {
+                throw new Error('Invalid date format');
             }
 
-            if (newStartTime >= newEndTime) {
-                throw new Error('Start time must be before end time');
-            }
+            // Convert start time to minutes for easier comparison
+            const [startHours, startMinutes] = slot.startTime.split(':').map(Number);
+            const slotStartMinutes = startHours * 60 + startMinutes;
 
-            // Check conflicts with existing slots
-            const conflictingSlots = existingSlots.filter(existingSlot => {
-                // Only check slots for the same date
-                if (existingSlot.Date !== newSlot.date) {
-                    return false;
+            // Find any conflicting slots within 20 minutes before or after
+            const conflicts = await Availability.findAll({
+                where: {
+                    doctorId,
+                    Date: dateObj,
+                    isAvailable: true,
+                    startTime: {
+                        [Op.and]: [
+                            { [Op.gte]: `${Math.floor((slotStartMinutes - 20) / 60).toString().padStart(2, '0')}:${((slotStartMinutes - 20) % 60).toString().padStart(2, '0')}:00` },
+                            { [Op.lte]: `${Math.floor((slotStartMinutes + 20) / 60).toString().padStart(2, '0')}:${((slotStartMinutes + 20) % 60).toString().padStart(2, '0')}:00` }
+                        ]
+                    }
                 }
-
-                const existingStart = new Date(`${existingSlot.Date} ${existingSlot.startTime}`);
-                const existingEnd = new Date(`${existingSlot.Date} ${existingSlot.endTime}`);
-
-                // Check if slots overlap
-                return (existingStart < newEndTime && existingEnd > newStartTime);
             });
 
             // Delete any conflicting slots
-            if (conflictingSlots.length > 0) {
-                await Promise.all(conflictingSlots.map(slot => slot.destroy()));
+            if (conflicts.length > 0) {
+                await Promise.all(conflicts.map(conflict => conflict.destroy()));
             }
+
+            // Calculate end time (20 minutes after start time)
+            const endMinutes = (startMinutes + 20) % 60;
+            const endHours = startHours + Math.floor((startMinutes + 20) / 60);
+            const endTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}:00`;
 
             // Create the new availability slot
             const [availability] = await Availability.upsert({
                 doctorId,
-                Date: newSlot.date,
-                startTime: newSlot.startTime,
-                endTime: newSlot.endTime,
+                Date: dateObj,
+                startTime: slot.startTime,
+                endTime: endTime,
                 isAvailable: true
             });
 
