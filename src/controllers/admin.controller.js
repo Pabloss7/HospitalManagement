@@ -56,9 +56,9 @@ const modifyDoctorInfo = async (req, res) => {
 
 const modifyPatientInfo = async (req, res) => {
     try {
-        const { patientId } = req.params;
+        const { patientID } = req.params;
         const { name, age, gender, address } = req.body;
-        const patient = await User.findByPk(patientId);
+        const patient = await User.findByPk(patientID);
         
         if (!patient) {
             return res.status(404).json({ message: 'Patient not found' });

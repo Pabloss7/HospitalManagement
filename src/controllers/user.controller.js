@@ -82,7 +82,6 @@ const updateOwnProfile = async (req, res) => {
         const userId = req.user.id; // Assuming user ID is set by auth middleware
         const { name, email, phone, address } = req.body;
         
-        // Only allow updating non-sensitive fields
         const updateData = { name, email, phone, address };
         
         const user = await userService.updateUser(userId, updateData);
@@ -95,9 +94,63 @@ const updateOwnProfile = async (req, res) => {
     }
 };
 
+const loginPatient = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const result = await userService.loginUser(email, password, 'patient');
+        
+        res.status(200).json({
+            patientID: result.id,
+            token: result.token,
+            message: 'Login successful'
+        });
+    } catch (error) {
+        res.status(401).json({
+            error: 'Invalid credentials'
+        });
+    }
+};
+
+const loginDoctor = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const result = await userService.loginUser(email, password, 'doctor');
+        
+        res.status(200).json({
+            doctorID: result.id,
+            token: result.token,
+            message: 'Login successful'
+        });
+    } catch (error) {
+        res.status(401).json({
+            error: 'Invalid credentials'
+        });
+    }
+};
+
+const loginAdmin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const result = await userService.loginUser(email, password, 'admin');
+        
+        res.status(200).json({
+            adminID: result.id,
+            token: result.token,
+            message: 'Login successful'
+        });
+    } catch (error) {
+        res.status(401).json({
+            error: 'Invalid credentials'
+        });
+    }
+};
+
 module.exports = {
     createPatient,
     createDoctor,
     createAdmin,
-    updateOwnProfile
+    updateOwnProfile,
+    loginPatient,
+    loginDoctor,
+    loginAdmin
 };

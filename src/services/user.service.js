@@ -1,5 +1,6 @@
 const userRepository = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { User, Department } = require('../models');
 
 class UserService {
@@ -17,6 +18,38 @@ class UserService {
             
             const { password, ...userWithoutPassword } = user.toJSON();
             return userWithoutPassword;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async loginUser(email, password, role) {
+        try {
+            // Find user by email and role
+            const user = await User.findOne({ where: { email, role } });
+            if (!user) {
+                throw new Error('Invalid credentials');
+            }
+
+            // Verify password
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) {
+                throw new Error('Invalid credentials');
+            }
+
+            console.log(user.role);
+            // Generate JWT token
+            const token = jwt.sign(
+                { id: user.id, role: user.role },
+                process.env.JWT_SECRET,
+                { expiresIn: '24h' }
+            );
+
+            const { password: _, ...userWithoutPassword } = user.toJSON();
+            return {
+                ...userWithoutPassword,
+                token
+            };
         } catch (error) {
             throw error;
         }
