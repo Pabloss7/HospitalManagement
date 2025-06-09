@@ -1,0 +1,89 @@
+const { User, Department } = require('../models');
+
+const modifyDoctorInfo = async (req, res) => {
+    try {
+        const { doctorId } = req.params;
+        const { name, age, gender, address, departmentId } = req.body;
+        
+        // Find doctor with their current department
+        const doctor = await User.findOne({
+            where: {
+                id: doctorId,
+                role: 'doctor'
+            },
+            include: [Department]
+        });
+
+        if (!doctor) {
+            return res.status(404).json({ message: 'Doctor not found' });
+        }
+
+        // Prepare user data update
+        const doctorData = { name, age, gender, address };
+        for (const key in doctorData) {
+            if (doctorData[key] === undefined) {
+                delete doctorData[key];
+            }
+        }
+
+        if (Object.keys(doctorData).length === 0 && !departmentId) {
+            return res.status(400).json({ message: 'No data provided for modification' });
+        }
+
+        // Update doctor's basic information
+        const updatedDoctor = await doctor.update(doctorData);
+
+        // Update department if provided
+        if (departmentId) {
+            const newDepartment = await Department.findByPk(departmentId);
+            if (!newDepartment) {
+                return res.status(404).json({ message: 'Department not found' });
+            }
+            await doctor.setDepartments([newDepartment]);
+        }
+
+        // Fetch the updated doctor with their department
+        const finalDoctor = await User.findOne({
+            where: { id: doctorId },
+            include: [Department]
+        });
+
+        res.json(finalDoctor);
+    } catch (error) {
+        res.status(500).json({ message: 'Error modifying doctor information', error: error.message });
+    }
+}
+
+const modifyPatientInfo = async (req, res) => {
+    try {
+        const { patientId } = req.params;
+        const { name, age, gender, address } = req.body;
+        const patient = await User.findByPk(patientId);
+        
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient not found' });
+        }
+
+        const patientData = { name, age, gender, address };
+        for (const key in patientData) {
+            if (patientData[key] === undefined) {
+                delete patientData[key];
+            }
+        }
+
+        if (Object.keys(patientData).length === 0) {
+            return res.status(400).json({ message: 'No data provided for modification' });
+        }
+
+        const updatedPatient = await patient.update(patientData);
+        res.json(updatedPatient);
+    } catch (error) {
+        res.status(500).json({ message: 'Error modifying patient information', error: error.message });
+    }
+}
+
+
+module.exports = {
+    modifyPatientInfo,
+    modifyDoctorInfo
+}
