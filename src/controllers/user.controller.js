@@ -79,13 +79,13 @@ const createAdmin = async (req, res) => {
 }
 const updateOwnProfile = async (req, res) => {
     try {
-        const userId = req.user.id; // Assuming user ID is set by auth middleware
+        const userId = req.user.id;
         const { name, email, phone, address } = req.body;
         
         const updateData = { name, email, phone, address };
         
         const user = await userService.updateUser(userId, updateData);
-        res.json(user);
+        res.status(200).json(user);
     } catch (error) {
         if (error.name === 'SequelizeUniqueConstraintError') {
             return res.status(400).json({ message: 'Email already exists' });

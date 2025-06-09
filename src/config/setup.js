@@ -72,6 +72,37 @@ module.exports = (sequelize) => {
       autoIncrement: true
     }
   });
+  const Availability = sequelize.define('Availability', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    doctorId: {  
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',  
+        key: 'id'
+      }
+    },
+    Date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    startTime: {
+      type: DataTypes.TIME,
+      allowNull: false
+    },
+    endTime: {
+      type: DataTypes.TIME,
+      allowNull: false
+    },
+    isAvailable: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    }
+  });
   
   // Set up associations
   User.belongsToMany(Department, {
@@ -87,5 +118,20 @@ module.exports = (sequelize) => {
     foreignKey: 'departmentId',
     otherKey: 'userId'
   });
-  return { User, Department, DoctorDepartment };
+  // Add association for doctor availability
+  // Define the one-to-many relationship between User (Doctor) and Availability
+  User.hasMany(Availability, {
+    foreignKey: 'doctorId',
+    as: 'availabilities',
+    scope: {
+      role: 'doctor'  // This ensures only doctors can have availability
+    }
+  });
+  
+  Availability.belongsTo(User, {
+    foreignKey: 'doctorId',
+    as: 'doctor'
+  });
+
+  return { User, Department, DoctorDepartment, Availability };
 };

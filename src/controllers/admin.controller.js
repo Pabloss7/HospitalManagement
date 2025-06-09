@@ -30,10 +30,8 @@ const modifyDoctorInfo = async (req, res) => {
             return res.status(400).json({ message: 'No data provided for modification' });
         }
 
-        // Update doctor's basic information
-        const updatedDoctor = await doctor.update(doctorData);
+        await doctor.update(doctorData);
 
-        // Update department if provided
         if (departmentId) {
             const newDepartment = await Department.findByPk(departmentId);
             if (!newDepartment) {
@@ -42,13 +40,12 @@ const modifyDoctorInfo = async (req, res) => {
             await doctor.setDepartments([newDepartment]);
         }
 
-        // Fetch the updated doctor with their department
         const finalDoctor = await User.findOne({
             where: { id: doctorId },
             include: [Department]
         });
 
-        res.json(finalDoctor);
+        res.status(200).json(finalDoctor);
     } catch (error) {
         res.status(500).json({ message: 'Error modifying doctor information', error: error.message });
     }
@@ -76,7 +73,7 @@ const modifyPatientInfo = async (req, res) => {
         }
 
         const updatedPatient = await patient.update(patientData);
-        res.json(updatedPatient);
+        res.status(200).json(updatedPatient);
     } catch (error) {
         res.status(500).json({ message: 'Error modifying patient information', error: error.message });
     }
