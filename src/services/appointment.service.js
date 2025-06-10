@@ -64,6 +64,36 @@ class AppointmentService {
 
         return appointment;
     }
+
+    async cancelAppointment(appointmentId, patientId) {
+        // Find the appointment with all its associations
+        const appointment = await appointmentRepository.findAppointmentById(appointmentId);
+        
+        if (!appointment) {
+            throw new Error('Appointment not found');
+        }
+
+        // Verify the patient owns this appointment
+        if (appointment.patientId !== patientId) {
+            throw new Error('Not authorized to cancel this appointment');
+        }
+
+        // Cancel the appointment
+        const cancelledAppointment = await appointmentRepository.cancelAppointment(appointmentId);
+
+        // Make the time slot available again
+        await appointment.timeSlot.update({ isAvailable: true });
+
+        // Log the action
+        await logAction('cancel_appointment', patientId, {
+            doctorId: appointment.doctorId,
+            appointmentId: appointment.id
+        });
+
+        // TODO: Send notifications to patient and doctor
+
+        return cancelledAppointment;
+    }
 }
 
 module.exports = new AppointmentService();

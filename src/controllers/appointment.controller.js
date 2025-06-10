@@ -34,6 +34,28 @@ class AppointmentController {
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
+
+    async cancelAppointment(req, res) {
+        try {
+            const { appointmentId } = req.params;
+            const patientId = req.user.id; 
+
+            await appointmentService.cancelAppointment(appointmentId, patientId);
+
+            return res.status(200).json({
+                message: 'Appointment canceled'
+            });
+
+        } catch (error) {
+            if (error.message === 'Appointment not found') {
+                return res.status(404).json({ error: error.message });
+            }
+            if (error.message === 'Not authorized to cancel this appointment') {
+                return res.status(403).json({ error: error.message });
+            }
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }
 
 module.exports = new AppointmentController();

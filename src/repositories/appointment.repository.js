@@ -34,6 +34,16 @@ class AppointmentRepository {
             ]
         });
     }
+
+    async cancelAppointment(appointmentId) {
+        const appointment = await this.findAppointmentById(appointmentId);
+        if (!appointment) {
+            throw new Error('Appointment not found');
+        }
+        
+        await appointment.update({ status: 'cancelled' });
+        return appointment;
+    }
 }
 
 module.exports = new AppointmentRepository();
