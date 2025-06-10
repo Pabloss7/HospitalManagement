@@ -103,35 +103,89 @@ module.exports = (sequelize) => {
       defaultValue: true
     }
   });
+  const Appointment = sequelize.define('Appointment', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    patientId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
+    doctorId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
+    availabilityId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Availabilities',
+        key: 'id'
+      }
+    },
+    status: {
+      type: DataTypes.ENUM('pending', 'confirmed', 'completed', 'cancelled'),
+      defaultValue: 'pending',
+      allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    }
+  });
   
-  // Set up associations
-  User.belongsToMany(Department, {
-    through: DoctorDepartment,
-    foreignKey: 'userId',
-    otherKey: 'departmentId',
+  // Add associations for appointments
+  User.hasMany(Appointment, {
+    foreignKey: 'patientId',
+    as: 'patientAppointments',
+    scope: {
+      role: 'patient'
+    }
+  });
+  
+  User.hasMany(Appointment, {
+    foreignKey: 'doctorId',
+    as: 'doctorAppointments',
     scope: {
       role: 'doctor'
     }
   });
-  Department.belongsToMany(User, {
-    through: DoctorDepartment,
-    foreignKey: 'departmentId',
-    otherKey: 'userId'
-  });
-  // Add association for doctor availability
-  // Define the one-to-many relationship between User (Doctor) and Availability
-  User.hasMany(Availability, {
-    foreignKey: 'doctorId',
-    as: 'availabilities',
-    scope: {
-      role: 'doctor'  // This ensures only doctors can have availability
-    }
+  
+  Appointment.belongsTo(User, {
+    foreignKey: 'patientId',
+    as: 'patient'
   });
   
-  Availability.belongsTo(User, {
+  Appointment.belongsTo(User, {
     foreignKey: 'doctorId',
     as: 'doctor'
   });
+  
+  Appointment.belongsTo(Availability, {
+    foreignKey: 'availabilityId',
+    as: 'timeSlot'
+  });
+  
+  Availability.hasOne(Appointment, {
+    foreignKey: 'availabilityId',
+    as: 'appointment'
+  });
 
-  return { User, Department, DoctorDepartment, Availability };
+  return { User, Department, DoctorDepartment, Availability, Appointment };
 };

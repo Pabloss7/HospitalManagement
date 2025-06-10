@@ -4,6 +4,7 @@ const userRoutes = require('./user.routes');
 const departmentRoutes = require('./department.routes');
 const adminRoutes = require('./admin.routes');
 const doctorRoutes = require('./doctor.routes');
+const appointmentRoutes = require('./appointment.routes');
 
 // Basic test route
 router.get('/', (req, res) => {
@@ -15,4 +16,6 @@ router.use('/', userRoutes);
 router.use('/', departmentRoutes);
 router.use('/admin', adminRoutes);
 router.use('/', doctorRoutes);
+router.use('/appointments', appointmentRoutes);
+
 module.exports = router;

@@ -14,7 +14,7 @@ class DoctorRepository {
     async findAvailabilityByDoctor(doctorId) {
         return await Availability.findAll({
             where: { doctorId },
-            order: [['dayOfWeek', 'ASC'], ['startTime', 'ASC']]
+            order: [['Date', 'ASC'], ['startTime', 'ASC']]
         });
     }
 
