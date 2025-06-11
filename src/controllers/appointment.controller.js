@@ -56,6 +56,47 @@ class AppointmentController {
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
+
+    async rescheduleAppointment(req, res) {
+        try {
+            const { appointmentId } = req.params;
+            const { doctorId, NewSlotId } = req.body;
+            const patientId = req.user.id; // Get patient ID from JWT token
+
+            // Validate request body
+            if (!doctorId || !NewSlotId) {
+                return res.status(400).json({
+                    error: 'Missing required fields'
+                });
+            }
+
+            const appointment = await appointmentService.rescheduleAppointment(
+                appointmentId,
+                patientId,
+                doctorId,
+                NewSlotId
+            );
+
+            return res.status(200).json({
+                message: 'Appointment rescheduled successfully',
+                appointmentId: appointment.id
+            });
+
+        } catch (error) {
+            if (error.message === 'Appointment not found') {
+                return res.status(404).json({ error: error.message });
+            }
+            if (error.message === 'Not authorized to modify this appointment') {
+                return res.status(403).json({ error: error.message });
+            }
+            if (error.message === 'Selected time slot is not available' ||
+                error.message === 'Patient already has an appointment at this time' ||
+                error.message === 'New time slot must belong to the same doctor') {
+                return res.status(400).json({ error: error.message });
+            }
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }
 
 module.exports = new AppointmentController();

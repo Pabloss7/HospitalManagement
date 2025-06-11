@@ -44,6 +44,16 @@ class AppointmentRepository {
         await appointment.update({ status: 'cancelled' });
         return appointment;
     }
+
+    async rescheduleAppointment(appointmentId, newAvailabilityId) {
+        const appointment = await this.findAppointmentById(appointmentId);
+        if (!appointment) {
+            throw new Error('Appointment not found');
+        }
+        
+        await appointment.update({ availabilityId: newAvailabilityId });
+        return appointment;
+    }
 }
 
 module.exports = new AppointmentRepository();

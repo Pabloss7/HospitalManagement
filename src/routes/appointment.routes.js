@@ -15,4 +15,10 @@ router.delete('/:appointmentId',
     appointmentController.cancelAppointment
 );
 
+router.put('/:appointmentId',
+    verifyToken,
+    checkRole(['patient']),
+    appointmentController.rescheduleAppointment
+);
+
 module.exports = router;

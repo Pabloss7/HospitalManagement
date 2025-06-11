@@ -94,6 +94,83 @@ class AppointmentService {
 
         return cancelledAppointment;
     }
+
+    async rescheduleAppointment(appointmentId, patientId, doctorId, newSlotId) {
+        // Find the current appointment
+        const currentAppointment = await appointmentRepository.findAppointmentById(appointmentId);
+        if (!currentAppointment) {
+            throw new Error('Appointment not found');
+        }
+
+        // Verify the patient owns this appointment
+        if (currentAppointment.patientId !== patientId) {
+            throw new Error('Not authorized to modify this appointment');
+        }
+
+        // Verify new slot belongs to the same doctor
+        const newSlot = await Availability.findOne({
+            where: {
+                id: newSlotId,
+                doctorId: doctorId,
+                isAvailable: true
+            }
+        });
+
+        if (!newSlot) {
+            throw new Error('Selected time slot is not available');
+        }
+
+        if (newSlot.doctorId !== currentAppointment.doctorId) {
+            throw new Error('New time slot must belong to the same doctor');
+        }
+
+        // Check for patient's existing appointments at the new time
+        const existingAppointments = await appointmentRepository.findPatientAppointments(patientId);
+        const hasConflict = existingAppointments.some(apt => {
+            const appointmentDate = new Date(apt.timeSlot.Date);
+            const newSlotDate = new Date(newSlot.Date);
+            
+            return (
+                apt.id !== appointmentId && // Exclude current appointment
+                appointmentDate.getTime() === newSlotDate.getTime() &&
+                apt.timeSlot.startTime === newSlot.startTime
+            );
+        });
+
+        if (hasConflict) {
+            throw new Error('Patient already has an appointment at this time');
+        }
+
+        // Get the old availability ID before updating the appointment
+        const oldAvailabilityId = currentAppointment.availabilityId;
+
+        // Make the old slot available again
+        await Availability.update(
+            { isAvailable: true },
+            { where: { id: oldAvailabilityId } }
+        );
+
+        // Update the appointment with new slot
+        const updatedAppointment = await appointmentRepository.rescheduleAppointment(appointmentId, newSlotId);
+
+        // Mark new slot as unavailable
+        await Availability.update(
+            { isAvailable: false },
+            { where: { id: newSlotId } }
+        );
+
+        // Log the action
+        await logAction('reschedule_appointment', patientId, {
+            doctorId,
+            oldSlotId: currentAppointment.availabilityId,
+            newSlotId,
+            appointmentId
+        });
+
+        // TODO: Send notifications to patient and doctor
+
+        return updatedAppointment;
+    }
 }
 
 module.exports = new AppointmentService();
