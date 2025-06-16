@@ -15,4 +15,10 @@ router.put('/:patientId/records/:recordId',
   medicalRecordController.updateMedicalRecord
 );
 
+router.get('/:patientId/records',
+  verifyToken,
+  checkRole(['patient']),
+  medicalRecordController.getPatientRecords
+);
+
 module.exports = router;

@@ -69,6 +69,24 @@ class MedicalRecordController {
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
+  async getPatientRecords(req, res) {
+    try {
+      // Validate that the patient in the token matches the patientId in the params
+      if (req.user.id !== parseInt(req.params.patientId) || req.user.role !== 'patient') {
+        return res.status(403).json({ error: 'Forbidden: You can only access your own medical records' });
+      }
+
+      const records = await medicalRecordService.getPatientRecords(req.params.patientId);
+      return res.status(200).json(records);
+    } catch (error) {
+      if (error.message === 'Patient not found') {
+        return res.status(404).json({ error: error.message });
+      }
+      console.error('Error retrieving medical records:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 }
 
 module.exports = new MedicalRecordController();

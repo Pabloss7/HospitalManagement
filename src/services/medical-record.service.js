@@ -47,6 +47,29 @@ class MedicalRecordService {
 
     return updatedRecord;
   }
+
+  async getPatientRecords(patientId) {
+    // Validate patient exists
+    const patient = await medicalRecordRepository.findPatientById(patientId);
+    if (!patient) {
+      throw new Error('Patient not found');
+    }
+
+    // Get all medical records for the patient
+    const records = await medicalRecordRepository.findPatientRecords(patientId);
+
+    // Format the records according to the API response structure
+    return records.map(record => ({
+      doctorId: record.doctor.id,
+      doctorName: record.doctor.name,
+      patientId: record.patientId,
+      diagnosis: record.diagnosis,
+      prescriptions: record.prescriptions,
+      testResults: record.testResults,
+      treatments: record.treatments,
+      notes: record.notes
+    }));
+  }
 }
 
 module.exports = new MedicalRecordService();

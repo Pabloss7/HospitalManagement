@@ -92,6 +92,17 @@ class MedicalRecordRepository {
       }
     });
   }
+
+  async findPatientRecords(patientId) {
+    return await MedicalRecord.findAll({
+      where: { patientId },
+      include: [{
+        model: User,
+        as: 'doctor',
+        attributes: ['id', 'name']
+      }]
+    });
+  }
 }
 
 module.exports = new MedicalRecordRepository();
