@@ -132,6 +132,21 @@ class DoctorService {
 
         return processedSlots;
     }
+
+    async getAllDoctors() {
+        const doctors = await doctorRepository.getAllDoctors();
+        
+        return doctors.map(doctor => ({
+            doctorID: doctor.id,
+            name: doctor.name,
+            departmentName: doctor.Departments[0]?.name || '',
+            availability: doctor.availabilities.map(slot => ({
+                day: new Date(slot.Date).toLocaleDateString('es-ES', { weekday: 'long' }),
+                startDate: slot.startTime,
+                endDate: slot.endTime
+            }))
+        }));
+    }
 }
 
 module.exports = new DoctorService();

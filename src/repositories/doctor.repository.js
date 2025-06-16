@@ -1,4 +1,5 @@
-const { User, Availability } = require('../models');
+const { User, Availability, Department , DoctorDepartment } = require('../models');
+
 
 class DoctorRepository {
     async findDoctorById(doctorId) {
@@ -26,6 +27,25 @@ class DoctorRepository {
 
     async updateAvailability(availability, updateData) {
         return await availability.update(updateData);
+    }
+
+    async getAllDoctors() {
+        return await User.findAll({
+            where: { role: 'doctor' },
+            include: [
+                {
+                    model: Department,
+                    through: DoctorDepartment
+                },
+                {
+                    model: Availability,
+                    as: 'availabilities',  // Changed to match the association alias
+                    where: { isAvailable: true },
+                    required: false
+                }
+            ],
+            distinct: true
+        });
     }
 }
 

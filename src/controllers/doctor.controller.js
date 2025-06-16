@@ -64,8 +64,20 @@ const updateDoctorAvailability = async (req, res) => {
     }
 };
 
+const getAllDoctors = async (req, res) => {
+    try {
+        const doctors = await doctorService.getAllDoctors();
+        res.status(200).json(doctors);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// Add to exports
 module.exports = {
     addAvailability,
     getAvailability,
-    updateDoctorAvailability
+    updateDoctorAvailability,
+    getAllDoctors
 };

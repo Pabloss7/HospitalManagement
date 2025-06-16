@@ -306,16 +306,24 @@ module.exports = (sequelize) => {
   User.belongsToMany(Department, {
     through: DoctorDepartment,
     foreignKey: 'userId',
-    otherKey: 'departmentId',
-    scope: {
-      role: 'doctor'
-    }
+    otherKey: 'departmentId'
   });
 
   Department.belongsToMany(User, {
     through: DoctorDepartment,
     foreignKey: 'departmentId',
     otherKey: 'userId'
+  });
+
+  // Add associations for doctor availability
+  User.hasMany(Availability, {
+    foreignKey: 'doctorId',
+    as: 'availabilities'
+  });
+
+  Availability.belongsTo(User, {
+    foreignKey: 'doctorId',
+    as: 'doctor'
   });
 
   return { User, Department, DoctorDepartment, Availability, Appointment, MedicalRecord };
