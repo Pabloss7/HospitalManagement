@@ -24,7 +24,21 @@ const getAllDepartments = async (req, res) => {
     }
 };
 
+const deleteDepartment = async (req, res) => {
+    try {
+        const { departmentId } = req.params;
+        const result = await departmentService.deleteDepartment(departmentId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error deleting department:', error);
+        const status = error.status || 500;
+        const message = error.status ? error.message : 'Internal server error';
+        res.status(status).json({ error: message });
+    }
+};
+
 module.exports = {
     createDepartment,
-    getAllDepartments
+    getAllDepartments,
+    deleteDepartment
 };

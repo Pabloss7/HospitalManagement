@@ -54,6 +54,28 @@ class DepartmentService {
             throw error;
         }
     }
+
+    async deleteDepartment(departmentId) {
+        try {
+            // Check if department exists
+            const department = await departmentRepository.getDepartmentById(departmentId);
+            if (!department) {
+                throw { status: 404, message: 'Department not found' };
+            }
+
+            // Check if there are doctors in the department
+            const doctors = await departmentRepository.getDepartmentDoctors(departmentId);
+            if (doctors.length > 0) {
+                throw { status: 400, message: 'Cannot delete department with assigned doctors' };
+            }
+
+            // Delete the department
+            await departmentRepository.deleteDepartment(departmentId);
+            return { message: 'Department deleted' };
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new DepartmentService();
