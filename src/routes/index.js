@@ -5,6 +5,7 @@ const departmentRoutes = require('./department.routes');
 const adminRoutes = require('./admin.routes');
 const doctorRoutes = require('./doctor.routes');
 const appointmentRoutes = require('./appointment.routes');
+const medicalRecordRoutes = require('./medical-record.routes');
 
 // Basic test route
 router.get('/', (req, res) => {
@@ -17,5 +18,6 @@ router.use('/', departmentRoutes);
 router.use('/admin', adminRoutes);
 router.use('/', doctorRoutes);
 router.use('/appointments', appointmentRoutes);
+router.use('/patients', medicalRecordRoutes);
 
 module.exports = router;

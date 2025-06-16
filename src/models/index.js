@@ -1,7 +1,7 @@
 const sequelize = require('../config/db');
 const setupModels = require('../config/setup');
 
-const { User, Department, DoctorDepartment, Availability, Appointment } = setupModels(sequelize);
+const { User, Department, DoctorDepartment, Availability, Appointment, MedicalRecord } = setupModels(sequelize);
 
 module.exports = {
   User,
@@ -9,5 +9,6 @@ module.exports = {
   DoctorDepartment,
   Availability,
   Appointment,
+  MedicalRecord,
   sequelize
 };
