@@ -17,6 +17,18 @@ class UserRepository {
             throw error;
         }
     }
+
+    async getAllPatients() {
+        try {
+            const patients = await User.findAll({
+                where: { role: 'patient' },
+                attributes: ['name', 'email', 'phone', 'address']
+            });
+            return patients;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new UserRepository();

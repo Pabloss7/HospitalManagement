@@ -79,8 +79,21 @@ const modifyPatientInfo = async (req, res) => {
     }
 }
 
+const getAllPatients = async (req, res) => {
+    try {
+        const patients = await User.findAll({
+            where: { role: 'patient' },
+            attributes: ['name', 'email', 'phone', 'address']
+        });
+        res.status(200).json(patients);
+    } catch (error) {
+        console.error('Error retrieving patients:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 module.exports = {
     modifyPatientInfo,
-    modifyDoctorInfo
-}
+    modifyDoctorInfo,
+    getAllPatients  // Add this to exports
+};

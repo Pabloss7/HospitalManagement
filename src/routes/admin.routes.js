@@ -10,4 +10,10 @@ router.put('/patients/:patientID',
     adminController.modifyPatientInfo
 );
 
+router.get('/patients',
+    verifyToken,
+    checkRole(['admin']),
+    adminController.getAllPatients
+);
+
 module.exports = router;

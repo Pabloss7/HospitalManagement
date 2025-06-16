@@ -54,6 +54,15 @@ class UserService {
             throw error;
         }
     }
+
+    async getAllPatients() {
+        try {
+            const patients = await userRepository.getAllPatients();
+            return { patients };
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new UserService();
