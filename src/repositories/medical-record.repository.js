@@ -18,6 +18,47 @@ class MedicalRecordRepository {
     return await MedicalRecord.create(formattedData);
   }
 
+  async updateMedicalRecord(recordId, doctorId, updateData) {
+    // Find the record and verify doctor's ownership
+    const record = await MedicalRecord.findOne({
+      where: {
+        id: recordId,
+        doctorId: doctorId
+      }
+    });
+
+    if (!record) {
+      throw new Error('Medical record not found or you are not authorized to update it');
+    }
+
+    // Ensure arrays are properly formatted
+    const formattedData = {
+      ...updateData,
+      prescriptions: Array.isArray(updateData.prescriptions) ? updateData.prescriptions : record.prescriptions,
+      testResults: Array.isArray(updateData.testResults) ? updateData.testResults : record.testResults,
+      treatments: Array.isArray(updateData.treatments) ? updateData.treatments : record.treatments
+    };
+
+    // Validate array contents if they are being updated
+    if (Array.isArray(updateData.prescriptions)) {
+      this.validatePrescriptions(formattedData.prescriptions);
+    }
+    if (Array.isArray(updateData.testResults)) {
+      this.validateTestResults(formattedData.testResults);
+    }
+    if (Array.isArray(updateData.treatments)) {
+      this.validateTreatments(formattedData.treatments);
+    }
+
+    // Update the record
+    await record.update(formattedData);
+    return record;
+  }
+
+  async findMedicalRecordById(recordId) {
+    return await MedicalRecord.findByPk(recordId);
+  }
+
   validatePrescriptions(prescriptions) {
     prescriptions.forEach(prescription => {
       if (!prescription.name || !prescription.dosis || !prescription.duration) {

@@ -9,4 +9,10 @@ router.post('/:patientId/records',
   medicalRecordController.createMedicalRecord
 );
 
+router.put('/:patientId/records/:recordId',
+  verifyToken,
+  checkRole(['doctor']),
+  medicalRecordController.updateMedicalRecord
+);
+
 module.exports = router;
