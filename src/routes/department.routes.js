@@ -3,7 +3,11 @@ const router = express.Router();
 const departmentController = require('../controllers/departments.controller');
 const { verifyToken, checkRole } = require('../middlewares/auth.middleware');
 
-router.post('/departments', departmentController.createDepartment);
+router.post('/departments', 
+    verifyToken,
+    checkRole(['admin']),
+    departmentController.createDepartment
+);
 router.get('/departments', departmentController.getAllDepartments);
 router.delete('/departments/:departmentId', 
     verifyToken, 
