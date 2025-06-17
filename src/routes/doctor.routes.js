@@ -26,8 +26,6 @@ router.put('/doctors/:doctorId/availability',
 
 // Get all doctors
 router.get('/doctors',
-    verifyToken,
-    checkRole(['patient', 'admin']),
     doctorController.getAllDoctors
 );
 
