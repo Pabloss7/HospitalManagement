@@ -1,3 +1,4 @@
+const { syncDatabase } = require('./models');
 const app = require('./app');
 const db = require('./config/db');
 const setupUser = require('./config/setup');
@@ -11,15 +12,18 @@ const sequelize = new Sequelize({
 // Initialize models
 const User = setupUser(sequelize);
 
-// Sync database
-sequelize.sync()
-    .then(() => {
-        console.log('Database synchronized');
-        const PORT = process.env.PORT || 3000;
-        app.listen(PORT, () => {
-            console.log(`Server running at http://localhost:${PORT}/hospitalManagement`);
+const startServer = async () => {
+    try {
+        // Sync database before starting the server
+        await syncDatabase();
+        
+        // Start your server
+        app.listen(3000, () => {
+            console.log(`Server is running on port 3000`);
         });
-    })
-    .catch(error => {
-        console.error('Error syncing database:', error);
-    });
+    } catch (error) {
+        console.error('Failed to start server:', error);
+    }
+};
+
+startServer();

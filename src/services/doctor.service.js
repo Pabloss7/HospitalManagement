@@ -12,47 +12,75 @@ class DoctorService {
 
         const processedSlots = [];
         for (const slot of availableSlots) {
-            // Validate time format
-            const startDateTime = new Date(`${slot.date} ${slot.startTime}`);
-            if (isNaN(startDateTime.getTime())) {
-                throw new Error('Invalid date or time format');
+            // Parse the date and time separately to ensure correct format
+            const dateObj = new Date(slot.date);
+            if (isNaN(dateObj.getTime())) {
+                throw new Error('Invalid date format');
             }
 
+            // Convert start time to minutes for comparison
+            const [startHours, startMinutes] = slot.startTime.split(':').map(Number);
+            const slotStartMinutes = startHours * 60 + startMinutes;
+
             // Calculate end time (20 minutes after start time)
-            const endDateTime = new Date(startDateTime.getTime() + 20 * 60000); // 20 minutes in milliseconds
-            const endTime = endDateTime.toTimeString().split(' ')[0]; // Get HH:MM:SS format
+            const endMinutes = (startMinutes + 20) % 60;
+            const endHours = startHours + Math.floor((startMinutes + 20) / 60);
+            const endTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}:00`;
 
             // Check for conflicts with existing slots
-            const conflicts = await Availability.findOne({
+            const conflicts = await Availability.findAll({
                 where: {
                     doctorId,
-                    Date: slot.date,
-                    isAvailable: true,
+                    Date: dateObj,
                     [Op.or]: [
                         {
-                            startTime: {
-                                [Op.between]: [slot.startTime, endTime]
-                            }
+                            // New slot starts during an existing slot
+                            [Op.and]: [
+                                {
+                                    startTime: {
+                                        [Op.lte]: `${startHours.toString().padStart(2, '0')}:${startMinutes.toString().padStart(2, '0')}:00`
+                                    }
+                                },
+                                {
+                                    endTime: {
+                                        [Op.gt]: `${startHours.toString().padStart(2, '0')}:${startMinutes.toString().padStart(2, '0')}:00`
+                                    }
+                                }
+                            ]
                         },
                         {
-                            endTime: {
-                                [Op.between]: [slot.startTime, endTime]
-                            }
+                            // New slot ends during an existing slot
+                            [Op.and]: [
+                                {
+                                    startTime: {
+                                        [Op.lt]: endTime
+                                    }
+                                },
+                                {
+                                    endTime: {
+                                        [Op.gte]: endTime
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }
             });
 
-            if (conflicts) {
-                throw new Error(`Time slot conflict found for ${slot.date}`);
+            if (conflicts.length > 0) {
+                if (slot.isAvailable) {
+                    await Promise.all(conflicts.map(conflict => conflict.destroy()));
+                } else {
+                    throw new Error(`Time slot conflict found for ${slot.date}`);
+                }
             }
 
             const availability = await doctorRepository.createAvailability({
                 doctorId,
-                Date: slot.date,
-                startTime: slot.startTime,
-                endTime: endTime,
-                isAvailable: true
+                Date: dateObj,
+                startTime: `${startHours.toString().padStart(2, '0')}:${startMinutes.toString().padStart(2, '0')}:00`,
+                endTime,
+                isAvailable: slot.isAvailable ?? true
             });
 
             processedSlots.push(availability);

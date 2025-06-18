@@ -4,8 +4,8 @@ const departmentController = require('../controllers/departments.controller');
 const { verifyToken, checkRole } = require('../middlewares/auth.middleware');
 
 router.post('/departments', 
-    verifyToken,
-    checkRole(['admin']),
+   // verifyToken,
+    //checkRole(['admin']),
     departmentController.createDepartment
 );
 router.get('/departments', departmentController.getAllDepartments);

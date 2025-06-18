@@ -24,7 +24,7 @@ const addAvailability = async (req, res) => {
 
 const getAvailability = async (req, res) => {
     try {
-        const doctorId = req.params.doctorId || req.user.id;
+        const doctorId = req.params.doctorID;
 
         const availability = await doctorService.getAvailability(doctorId);
         res.json(availability);
