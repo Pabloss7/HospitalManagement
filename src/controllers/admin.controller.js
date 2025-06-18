@@ -1,4 +1,4 @@
-const { User, Department } = require('../models');
+const { User, Department, Log } = require('../models');
 
 const modifyDoctorInfo = async (req, res) => {
     try {
@@ -92,8 +92,27 @@ const getAllPatients = async (req, res) => {
     }
 };
 
+const getAllLogs = async (req, res) => {
+    try {
+        const logs = await Log.findAll({
+            include: [{
+                model: User,
+                as: 'user',  // Add the alias to match the association
+                attributes: ['name', 'email', 'role']
+            }],
+            order: [['timestamp', 'DESC']]
+        });
+        
+        res.status(200).json(logs);
+    } catch (error) {
+        console.error('Error retrieving logs:', error);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+};
+
 module.exports = {
     modifyPatientInfo,
     modifyDoctorInfo,
-    getAllPatients  // Add this to exports
+    getAllPatients,
+    getAllLogs
 };

@@ -4,6 +4,7 @@ const departmentController = require('../controllers/departments.controller');
 const { verifyToken, checkRole } = require('../middlewares/auth.middleware');
 
 router.post('/departments', 
+    //in order to make easier how we test the project this is commented, but admin should be the only one able to create departments
    // verifyToken,
     //checkRole(['admin']),
     departmentController.createDepartment

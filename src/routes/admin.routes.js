@@ -21,4 +21,10 @@ router.get('/patients',
     adminController.getAllPatients
 );
 
+router.get('/logs',
+    verifyToken,
+    checkRole(['admin']),
+    adminController.getAllLogs
+);
+
 module.exports = router;

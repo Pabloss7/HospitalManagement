@@ -91,7 +91,7 @@ class AppointmentService {
         });
 
         // TODO: Send notifications to patient and doctor
-
+        console.log(`Your appointment from ${patientId} has been cancelled`);
         return cancelledAppointment;
     }
 
@@ -168,6 +168,7 @@ class AppointmentService {
         });
 
         // TODO: Send notifications to patient and doctor
+        console.log(`Your appointment ,doctor ${doctorId}, with the patient ${patientId} has been reescheduled`);
 
         return updatedAppointment;
     }

@@ -83,6 +83,12 @@ MedicalRecord.belongsTo(User, {
   as: 'doctor'
 });
 
+// Add associations for logs
+Log.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user'
+});
+
 // Add associations for doctors and departments
 User.belongsToMany(Department, {
 through: DoctorDepartment,

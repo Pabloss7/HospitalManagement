@@ -2,6 +2,7 @@ const userRepository = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User, Department } = require('../models');
+const { logAction } = require('../utils/logger');
 
 class UserService {
     async createUser(userData) {
@@ -17,6 +18,18 @@ class UserService {
             });
             
             const { password, ...userWithoutPassword } = user.toJSON();
+
+            // Log the user creation action
+            await logAction(
+                'User Created',
+                null, // No userId since this is a new user creation
+                {
+                    newUserId: user.id,
+                    role: userData.role,
+                    email: userData.email
+                }
+            );
+         
             return userWithoutPassword;
         } catch (error) {
             throw error;

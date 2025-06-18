@@ -1,11 +1,23 @@
 const { Department, User } = require('../models');
 const userRepository = require('../repositories/user.repository');
 const departmentRepository = require('../repositories/department.repository');
+const { logAction } = require('../utils/logger');
 
 class DepartmentService {
     async createDepartment(departmentData) {
         try {
             const department = await Department.create(departmentData);
+            
+            // Log department creation
+            await logAction(
+                'Department Created',
+                null,
+                {
+                    departmentId: department.id,
+                    departmentName: department.name
+                }
+            );
+            
             return department;
         } catch (error) {
             throw error;
@@ -71,6 +83,17 @@ class DepartmentService {
 
             // Delete the department
             await departmentRepository.deleteDepartment(departmentId);
+            
+            // Log department deletion
+            await logAction(
+                'Department Deleted',
+                null,
+                {
+                    departmentId: department.id,
+                    departmentName: department.name
+                }
+            );
+            
             return { message: 'Department deleted' };
         } catch (error) {
             throw error;
