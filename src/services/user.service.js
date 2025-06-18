@@ -76,6 +76,36 @@ class UserService {
             throw error;
         }
     }
+
+    async updateUser(userId, userData) {
+        try {
+            // If password is being updated, hash it
+            if (userData.password) {
+                const salt = await bcrypt.genSalt(10);
+                userData.password = await bcrypt.hash(userData.password, salt);
+            }
+
+            // Remove fields that shouldn't be updated
+            const { role, email, ...updateData } = userData;
+
+            // Update user
+            const updatedUser = await userRepository.updateUser(userId, updateData);
+            
+            // Log the update action
+            await logAction(
+                'User Updated',
+                userId,
+                {
+                    updatedFields: Object.keys(updateData).join(', ')
+                }
+            );
+
+            const { password, ...userWithoutPassword } = updatedUser.toJSON();
+            return userWithoutPassword;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new UserService();

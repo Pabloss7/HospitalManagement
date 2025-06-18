@@ -14,9 +14,9 @@ router.get('/', (req, res) => {
 
 
 router.use('/', userRoutes);
-router.use('/', departmentRoutes);
+router.use('/departments', departmentRoutes);
 router.use('/admins', adminRoutes);
-router.use('/', doctorRoutes);
+router.use('/doctors', doctorRoutes);
 router.use('/appointments', appointmentRoutes);
 router.use('/patients', medicalRecordRoutes);
 

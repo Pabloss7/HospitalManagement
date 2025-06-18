@@ -17,6 +17,19 @@ class UserRepository {
             throw error;
         }
     }
+    async updateUser(userId, userData) {
+        try {
+            const user = await User.findByPk(userId);
+            if (!user) {
+                throw new Error('User not found');
+            }
+            
+            await user.update(userData);
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    }
 
     async getAllPatients() {
         try {

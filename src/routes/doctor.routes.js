@@ -11,21 +11,21 @@ router.post('/availability',
 );
 
 
-router.get('/doctors/:doctorID/availability',
+router.get('/:doctorID/availability',
     verifyToken,
     checkRole(['doctor', 'patient']),
     doctorController.getAvailability
 );
 
 // Update doctor availability
-router.put('/doctors/:doctorId/availability',
+router.put('/:doctorId/availability',
     verifyToken,
     checkRole(['doctor']),
     doctorController.updateDoctorAvailability
 );
 
 // Get all doctors
-router.get('/doctors',
+router.get('/',
     doctorController.getAllDoctors
 );
 
