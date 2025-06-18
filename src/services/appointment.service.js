@@ -172,6 +172,26 @@ class AppointmentService {
 
         return updatedAppointment;
     }
+
+    async getUserAppointments(userId, userRole) {
+        let appointments;
+        
+        if (userRole === 'patient') {
+            appointments = await appointmentRepository.findPatientAppointments(userId);
+        } else if (userRole === 'doctor') {
+            appointments = await appointmentRepository.findDoctorAppointments(userId);
+        } else {
+            throw new Error('Invalid user role');
+        }
+        
+        // Log the action
+        await logAction('view_appointments', userId, {
+            role: userRole,
+            count: appointments.length
+        });
+
+        return appointments;
+    }
 }
 
 module.exports = new AppointmentService();

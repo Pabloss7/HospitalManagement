@@ -97,6 +97,18 @@ class AppointmentController {
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
+    async getMyAppointments(req, res) {
+        try {
+            const userId = req.user.id;
+            const userRole = req.user.role;
+            
+            const appointments = await appointmentService.getUserAppointments(userId, userRole);
+
+            return res.status(200).json(appointments);
+        } catch (error) {
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }
 
 module.exports = new AppointmentController();

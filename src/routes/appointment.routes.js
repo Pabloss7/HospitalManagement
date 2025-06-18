@@ -21,4 +21,10 @@ router.put('/:appointmentId',
     appointmentController.rescheduleAppointment
 );
 
+router.get('/own-appointments',
+    verifyToken,
+    checkRole(['patient', 'doctor']),
+    appointmentController.getMyAppointments
+);
+
 module.exports = router;

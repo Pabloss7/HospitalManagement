@@ -8,8 +8,16 @@ class AppointmentRepository {
     async findAppointmentById(id) {
         return await Appointment.findByPk(id, {
             include: [
-                { model: User, as: 'patient' },
-                { model: User, as: 'doctor' },
+                { 
+                    model: User, 
+                    as: 'patient',
+                    attributes: ['name']
+                },
+                { 
+                    model: User, 
+                    as: 'doctor',
+                    attributes: ['name']
+                },
                 { model: Availability, as: 'timeSlot' }
             ]
         });
@@ -19,7 +27,11 @@ class AppointmentRepository {
         return await Appointment.findAll({
             where: { patientId },
             include: [
-                { model: User, as: 'doctor' },
+                { 
+                    model: User, 
+                    as: 'doctor',
+                    attributes: ['name']
+                },
                 { model: Availability, as: 'timeSlot' }
             ]
         });
@@ -29,7 +41,11 @@ class AppointmentRepository {
         return await Appointment.findAll({
             where: { doctorId },
             include: [
-                { model: User, as: 'patient' },
+                { 
+                    model: User, 
+                    as: 'patient',
+                    attributes: ['name']
+                },
                 { model: Availability, as: 'timeSlot' }
             ]
         });
