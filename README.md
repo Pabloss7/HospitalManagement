@@ -31,8 +31,7 @@ A comprehensive hospital management system built with Node.js, Express, and Sequ
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd finalpractice-alu119380
+git clone https://github.com/Pabloss7/HospitalManagement
 
 2. Install dependencies:
 ```bash
