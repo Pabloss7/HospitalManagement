@@ -1,0 +1,946 @@
+{
+	"info": {
+		"_postman_id": "6a55a42b-7c65-4af7-ba1b-c14eca82db5c",
+		"name": "Hospital Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45744730"
+	},
+	"item": [
+		{
+			"name": "Users creation/login",
+			"item": [
+				{
+					"name": "doctors",
+					"item": [
+						{
+							"name": "create doctor",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"pablo\",\r\n  \"age\": 35,\r\n  \"gender\": \"male\",\r\n  \"address\": \"123 Medical Center Drive, Suite 100\",\r\n  \"phone\": \"1234567890\",\r\n  \"email\": \"doctor@pablo.com\",\r\n  \"password\": \"pablo\",\r\n  \"department\": \"Trauma\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/doctors",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"doctors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login doctor",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"doctor@pablo.com\",\r\n  \"password\": \"pablo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/doctors/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"doctors",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc1MDI1NzY3NSwiZXhwIjoxNzUwMzQ0MDc1fQ.XHs2D0Xqk413IJLOLljAnstJPtyozv44dcop-C4ceEk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    //you can introduce to modify name,phone, address\r\n  \"address\": \"I live now here\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/doctors/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"doctors",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admins",
+					"item": [
+						{
+							"name": "Create Admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"pablo\",\r\n  \"age\": 35,\r\n  \"gender\": \"male\",\r\n  \"address\": \"123 Medical Center Drive, Suite 100\",\r\n  \"phone\": \"1234567890\",\r\n  \"email\": \"patient@pablo.com\",\r\n  \"password\": \"pablo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/patients",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"patients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"doctor@pablo.com\",\r\n  \"password\": \"pablo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/doctors/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"doctors",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "patients",
+					"item": [
+						{
+							"name": "Create Patient",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"pablo\",\r\n  \"age\": 35,\r\n  \"gender\": \"male\",\r\n  \"address\": \"123 Medical Center Drive, Suite 100\",\r\n  \"phone\": \"1234567890\",\r\n  \"email\": \"patient@pablo.com\",\r\n  \"password\": \"pablo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/patients",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"patients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login patient",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"doctor@pablo.com\",\r\n  \"password\": \"pablo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/doctors/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"doctors",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc1MDI1NzY3NSwiZXhwIjoxNzUwMzQ0MDc1fQ.XHs2D0Xqk413IJLOLljAnstJPtyozv44dcop-C4ceEk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    //you can introduce to modify name, email,phone and address\r\n  \"email\": \"doctorUpdated@pablo.com\",\r\n  \"address\": \"I live now here\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/doctors/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"doctors",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "availability",
+			"item": [
+				{
+					"name": "Doctors functionality",
+					"item": [
+						{
+							"name": "Update doctor availability",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc0OTQ5MDUxNiwiZXhwIjoxNzQ5NTc2OTE2fQ.A6GPQJwNEbOw_LxL_YFdFhc7sJSaExDTNF83dCUkKyI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"availableSlots\": [\r\n        {\r\n            \"date\": \"2024-03-20\",\r\n            \"startTime\": \"09:00:00\",\r\n            \"endTime\": \"10:00:00\"\r\n        },\r\n        {\r\n            \"date\": \"2024-03-20\",\r\n            \"startTime\": \"14:00:00\",\r\n            \"endTime\": \"15:00:00\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/doctors/1/availability",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"doctors",
+										"1",
+										"availability"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD availability",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc0OTQ5MDUxNiwiZXhwIjoxNzQ5NTc2OTE2fQ.A6GPQJwNEbOw_LxL_YFdFhc7sJSaExDTNF83dCUkKyI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"availableSlots\": [\r\n        {\r\n            \"date\": \"2025-03-20\",\r\n            \"startTime\": \"09:00:00\"\r\n        },\r\n        {\r\n            \"date\": \"2025-03-20\",\r\n            \"startTime\": \"14:00:00\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/availability",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"availability"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Retrieve doctor availability",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc0OTQ5MDUxNiwiZXhwIjoxNzQ5NTc2OTE2fQ.A6GPQJwNEbOw_LxL_YFdFhc7sJSaExDTNF83dCUkKyI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/doctors/1/availability",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"doctors",
+								"1",
+								"availability"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "Book appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NDk1NTIzODIsImV4cCI6MTc0OTYzODc4Mn0.2BqcS-JBxNkeKcI55WgBkjpg1_-fpi8FbwZbj8pCDQY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"patientId\": 2,\r\n    \"doctorId\": 1,\r\n    \"timeSlotId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/appointments",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reeschedule appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NDk2NjM0NTQsImV4cCI6MTc0OTc0OTg1NH0.nnQEe5hlqwCeHqPm2eXwbOcQ0Qp7AAF1UCVX0Q6-LYo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"doctorId\": 1,\r\n    \"NewSlotId\": 17\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/appointments/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"appointments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NDk1NTIzODIsImV4cCI6MTc0OTYzODc4Mn0.2BqcS-JBxNkeKcI55WgBkjpg1_-fpi8FbwZbj8pCDQY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/appointments/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"appointments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get appointments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NTAyNTc0NTUsImV4cCI6MTc1MDM0Mzg1NX0.VIduFb_7azPWzfXDIB2txkzpuEE55moyDY_y113TjmI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/appointments/own-appointments",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"appointments",
+								"own-appointments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "medical-records",
+			"item": [
+				{
+					"name": "doctor fucntionality",
+					"item": [
+						{
+							"name": "Create medical record",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc1MDAzMjU1OSwiZXhwIjoxNzUwMTE4OTU5fQ.kX1-cTk51FoQ2wNYxj1hlE9pe91AqIcWQZaDMkfjuoo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"doctorId\": 1,\r\n  \"patientId\": 2,\r\n  \"diagnosis\": \"Acute bronchitis with mild fever\",\r\n  \"prescriptions\": [\r\n    {\r\n      \"name\": \"Amoxicillin\",\r\n      \"dosis\": \"500mg every 8 hours\",\r\n      \"duration\": \"7 days\"\r\n    },\r\n    {\r\n      \"name\": \"Ibuprofen\",\r\n      \"dosis\": \"400mg as needed\",\r\n      \"duration\": \"5 days\"\r\n    }\r\n  ],\r\n  \"testResults\": [\r\n    {\r\n      \"name\": \"Chest X-Ray\",\r\n      \"result\": \"Clear, no signs of pneumonia\",\r\n      \"date\": \"2024-03-20\"\r\n    },\r\n    {\r\n      \"name\": \"Blood Test\",\r\n      \"result\": \"Elevated white blood cell count\",\r\n      \"date\": \"2024-03-20\"\r\n    }\r\n  ],\r\n  \"treatments\": [\r\n    {\r\n      \"treatmentName\": \"Rest and hydration\",\r\n      \"status\": \"ongoing\",\r\n      \"startDate\": \"2024-03-20\",\r\n      \"endDate\": \"2024-03-27\"\r\n    }\r\n  ],\r\n  \"notes\": \"Patient presents with cough, fever (38.2°C), and fatigue for the past 3 days. Recommend follow-up in 1 week if symptoms persist.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/patients/2/records",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"patients",
+										"2",
+										"records"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update medical record",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc1MDEwMzYxNSwiZXhwIjoxNzUwMTkwMDE1fQ.7chOtSKJarydYFF7YAnivUQf6lotrQBPvs-yoSfBKGw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"doctorId\": 1,\r\n  \"patientId\": 2,\r\n  \"diagnosis\": \"Updated diagnosis: Patient showing improvement\",\r\n  \"prescriptions\": [\r\n    {\r\n      \"name\": \"Amoxicillin\",\r\n      \"dosis\": \"500mg twice daily\",\r\n      \"duration\": \"7 days\"\r\n    }\r\n  ],\r\n  \"testResults\": [\r\n    {\r\n      \"name\": \"Blood Test\",\r\n      \"result\": \"Normal levels\",\r\n      \"date\": \"2024-03-01\"\r\n    }\r\n  ],\r\n  \"treatments\": [\r\n    {\r\n      \"treatmentName\": \"Physical Therapy\",\r\n      \"status\": \"ongoing\",\r\n      \"startDate\": \"2024-03-01\",\r\n      \"endDate\": \"2024-04-01\"\r\n    }\r\n  ],\r\n  \"notes\": \"Patient responding well to treatment\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/hospitalManagement/patients/2/records/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"hospitalManagement",
+										"patients",
+										"2",
+										"records",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Patient medical records",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NTAxMDQ0NjgsImV4cCI6MTc1MDE5MDg2OH0._UloOXMkLWQY_RXTJvyLuBuxnyy-yDR428InuwHriE4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/patients/2/records",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"patients",
+								"2",
+								"records"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin fucntionality",
+			"item": [
+				{
+					"name": "Create department",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"pablo\",\r\n  \"age\": 35,\r\n  \"gender\": \"male\",\r\n  \"address\": \"123 Medical Center Drive, Suite 100\",\r\n  \"phone\": \"1234567890\",\r\n  \"email\": \"doctor@pablo.com\",\r\n  \"password\": \"pablo\",\r\n  \"department\": \"Trauma\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/doctors",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete department",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NDk1NTIzODIsImV4cCI6MTc0OTYzODc4Mn0.2BqcS-JBxNkeKcI55WgBkjpg1_-fpi8FbwZbj8pCDQY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/departments",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all patients",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NTAxMDQ0NjgsImV4cCI6MTc1MDE5MDg2OH0._UloOXMkLWQY_RXTJvyLuBuxnyy-yDR428InuwHriE4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/patients/2/records",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"patients",
+								"2",
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all Logs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NTAxMDQ0NjgsImV4cCI6MTc1MDE5MDg2OH0._UloOXMkLWQY_RXTJvyLuBuxnyy-yDR428InuwHriE4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/hospitalManagement/doctors",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"hospitalManagement",
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get all departments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NTAxMDQ0NjgsImV4cCI6MTc1MDE5MDg2OH0._UloOXMkLWQY_RXTJvyLuBuxnyy-yDR428InuwHriE4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/hospitalManagement/patients/2/records",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"hospitalManagement",
+						"patients",
+						"2",
+						"records"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all doctors",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NTAxMDQ0NjgsImV4cCI6MTc1MDE5MDg2OH0._UloOXMkLWQY_RXTJvyLuBuxnyy-yDR428InuwHriE4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/hospitalManagement/doctors",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"hospitalManagement",
+						"doctors"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

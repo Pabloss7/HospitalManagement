@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: Hospital Management
+  version: 1.0.0
+paths:
+  /hospitalManagement/doctors:
+    post:
+      summary: Create department
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: pablo
+              age: 35
+              gender: male
+              address: 123 Medical Center Drive, Suite 100
+              phone: '1234567890'
+              email: doctor@pablo.com
+              password: pablo
+              department: Trauma
+      responses:
+        '200':
+          description: Successful response
+    get:
+      summary: Get all doctors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: {}
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/doctors/login:
+    post:
+      summary: Login patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              email: doctor@pablo.com
+              password: pablo
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/doctors/1:
+    put:
+      summary: Update profile
+      requestBody: {}
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/patients:
+    post:
+      summary: Create Patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: pablo
+              age: 35
+              gender: male
+              address: 123 Medical Center Drive, Suite 100
+              phone: '1234567890'
+              email: patient@pablo.com
+              password: pablo
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/doctors/1/availability:
+    put:
+      summary: Update doctor availability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              availableSlots:
+              - date: '2024-03-20'
+                startTime: 09:00:00
+                endTime: '10:00:00'
+              - date: '2024-03-20'
+                startTime: '14:00:00'
+                endTime: '15:00:00'
+      responses:
+        '200':
+          description: Successful response
+    get:
+      summary: Retrieve doctor availability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: {}
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/availability:
+    post:
+      summary: ADD availability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              availableSlots:
+              - date: '2025-03-20'
+                startTime: 09:00:00
+              - date: '2025-03-20'
+                startTime: '14:00:00'
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/appointments:
+    post:
+      summary: Book appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              patientId: 2
+              doctorId: 1
+              timeSlotId: 2
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/appointments/1:
+    put:
+      summary: Reeschedule appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              doctorId: 1
+              NewSlotId: 17
+      responses:
+        '200':
+          description: Successful response
+    delete:
+      summary: Cancel appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: {}
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/appointments/own-appointments:
+    get:
+      summary: Get appointments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: {}
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/patients/2/records:
+    post:
+      summary: Create medical record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              doctorId: 1
+              patientId: 2
+              diagnosis: Acute bronchitis with mild fever
+              prescriptions:
+              - name: Amoxicillin
+                dosis: 500mg every 8 hours
+                duration: 7 days
+              - name: Ibuprofen
+                dosis: 400mg as needed
+                duration: 5 days
+              testResults:
+              - name: Chest X-Ray
+                result: Clear, no signs of pneumonia
+                date: '2024-03-20'
+              - name: Blood Test
+                result: Elevated white blood cell count
+                date: '2024-03-20'
+              treatments:
+              - treatmentName: Rest and hydration
+                status: ongoing
+                startDate: '2024-03-20'
+                endDate: '2024-03-27'
+              notes: Patient presents with cough, fever (38.2°C), and fatigue for
+                the past 3 days. Recommend follow-up in 1 week if symptoms persist.
+      responses:
+        '200':
+          description: Successful response
+    get:
+      summary: Get all departments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: {}
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/patients/2/records/1:
+    put:
+      summary: Update medical record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              doctorId: 1
+              patientId: 2
+              diagnosis: 'Updated diagnosis: Patient showing improvement'
+              prescriptions:
+              - name: Amoxicillin
+                dosis: 500mg twice daily
+                duration: 7 days
+              testResults:
+              - name: Blood Test
+                result: Normal levels
+                date: '2024-03-01'
+              treatments:
+              - treatmentName: Physical Therapy
+                status: ongoing
+                startDate: '2024-03-01'
+                endDate: '2024-04-01'
+              notes: Patient responding well to treatment
+      responses:
+        '200':
+          description: Successful response
+  /hospitalManagement/departments:
+    delete:
+      summary: Delete department
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: {}
+      responses:
+        '200':
+          description: Successful response
