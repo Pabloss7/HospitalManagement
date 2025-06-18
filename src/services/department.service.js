@@ -40,6 +40,10 @@ class DepartmentService {
     async assignDoctorToDepartment(userId, departmentId) {
         try {
             const user = await userRepository.getUserById(userId);
+            if (!user) {
+                throw new Error('User not found');
+            }
+
             const department = await Department.findByPk(departmentId);
             if (!department) {
                 throw new Error('Department not found');
