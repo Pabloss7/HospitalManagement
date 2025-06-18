@@ -4,7 +4,6 @@ const { logAction } = require('../utils/logger');
 
 class AppointmentService {
     async bookAppointment(patientId, doctorId, availabilityId) {
-        // Verify doctor availability
         const availability = await Availability.findOne({
             where: {
                 id: availabilityId,
@@ -17,7 +16,6 @@ class AppointmentService {
             throw new Error('Selected time slot is not available');
         }
 
-        // Validate patient exists and is a patient
         const patient = await User.findOne({
             where: { id: patientId, role: 'patient' }
         });
@@ -42,7 +40,6 @@ class AppointmentService {
             throw new Error('Patient already has an appointment at this time');
         }
 
-        // Create the appointment
         const appointment = await appointmentRepository.createAppointment({
             patientId,
             doctorId,
@@ -50,10 +47,8 @@ class AppointmentService {
             status: 'confirmed'
         });
 
-        // Update availability status
         await availability.update({ isAvailable: false });
 
-        // Log the action
         await logAction('book_appointment', patientId, {
             doctorId,
             availabilityId,
@@ -66,25 +61,20 @@ class AppointmentService {
     }
 
     async cancelAppointment(appointmentId, patientId) {
-        // Find the appointment with all its associations
         const appointment = await appointmentRepository.findAppointmentById(appointmentId);
         
         if (!appointment) {
             throw new Error('Appointment not found');
         }
 
-        // Verify the patient owns this appointment
         if (appointment.patientId !== patientId) {
             throw new Error('Not authorized to cancel this appointment');
         }
 
-        // Cancel the appointment
         const cancelledAppointment = await appointmentRepository.cancelAppointment(appointmentId);
 
-        // Make the time slot available again
         await appointment.timeSlot.update({ isAvailable: true });
 
-        // Log the action
         await logAction('cancel_appointment', patientId, {
             doctorId: appointment.doctorId,
             appointmentId: appointment.id
@@ -96,18 +86,15 @@ class AppointmentService {
     }
 
     async rescheduleAppointment(appointmentId, patientId, doctorId, newSlotId) {
-        // Find the current appointment
         const currentAppointment = await appointmentRepository.findAppointmentById(appointmentId);
         if (!currentAppointment) {
             throw new Error('Appointment not found');
         }
 
-        // Verify the patient owns this appointment
         if (currentAppointment.patientId !== patientId) {
             throw new Error('Not authorized to modify this appointment');
         }
 
-        // Verify new slot belongs to the same doctor
         const newSlot = await Availability.findOne({
             where: {
                 id: newSlotId,
@@ -124,7 +111,6 @@ class AppointmentService {
             throw new Error('New time slot must belong to the same doctor');
         }
 
-        // Check for patient's existing appointments at the new time
         const existingAppointments = await appointmentRepository.findPatientAppointments(patientId);
         const hasConflict = existingAppointments.some(apt => {
             const appointmentDate = new Date(apt.timeSlot.Date);
@@ -144,22 +130,18 @@ class AppointmentService {
         // Get the old availability ID before updating the appointment
         const oldAvailabilityId = currentAppointment.availabilityId;
 
-        // Make the old slot available again
         await Availability.update(
             { isAvailable: true },
             { where: { id: oldAvailabilityId } }
         );
 
-        // Update the appointment with new slot
         const updatedAppointment = await appointmentRepository.rescheduleAppointment(appointmentId, newSlotId);
 
-        // Mark new slot as unavailable
         await Availability.update(
             { isAvailable: false },
             { where: { id: newSlotId } }
         );
 
-        // Log the action
         await logAction('reschedule_appointment', patientId, {
             doctorId,
             oldSlotId: currentAppointment.availabilityId,
@@ -183,8 +165,7 @@ class AppointmentService {
         } else {
             throw new Error('Invalid user role');
         }
-        
-        // Log the action
+
         await logAction('view_appointments', userId, {
             role: userRole,
             count: appointments.length

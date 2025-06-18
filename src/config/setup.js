@@ -150,7 +150,6 @@ module.exports = (sequelize) => {
     }
   });
   
-  // Add associations for appointments
   User.hasMany(Appointment, {
     foreignKey: 'patientId',
     as: 'patientAppointments',
@@ -275,7 +274,6 @@ module.exports = (sequelize) => {
       }
   });
   
-  // Add associations for medical records
   User.hasMany(MedicalRecord, {
       foreignKey: 'patientId',
       as: 'patientMedicalRecords',
@@ -302,7 +300,6 @@ module.exports = (sequelize) => {
       as: 'doctor'
   });
 
-  // Add associations for doctors and departments
   User.belongsToMany(Department, {
     through: DoctorDepartment,
     foreignKey: 'userId',
@@ -315,7 +312,6 @@ module.exports = (sequelize) => {
     otherKey: 'userId'
   });
 
-  // Add associations for doctor availability
   User.hasMany(Availability, {
     foreignKey: 'doctorId',
     as: 'availabilities'

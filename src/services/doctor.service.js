@@ -18,16 +18,13 @@ class DoctorService {
                 throw new Error('Invalid date format');
             }
 
-            // Convert start time to minutes for comparison
             const [startHours, startMinutes] = slot.startTime.split(':').map(Number);
             const slotStartMinutes = startHours * 60 + startMinutes;
 
-            // Calculate end time (20 minutes after start time)
             const endMinutes = (startMinutes + 20) % 60;
             const endHours = startHours + Math.floor((startMinutes + 20) / 60);
             const endTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}:00`;
 
-            // Check for conflicts with existing slots
             const conflicts = await Availability.findAll({
                 where: {
                     doctorId,
@@ -95,7 +92,8 @@ class DoctorService {
     async getAvailability(doctorId) {
         return await doctorRepository.findAvailabilityByDoctor(doctorId);
     }
-
+ // NOTE: I could have separate in a function how I check for conflicts in order to reduce num of lines
+ // , but I run out of time
     async updateDoctorAvailability(doctorId, availableSlots) {
         const doctor = await User.findOne({
             where: { id: doctorId, role: 'doctor' }
@@ -107,17 +105,14 @@ class DoctorService {
 
         const processedSlots = [];
         for (const slot of availableSlots) {
-            // Parse the date and time separately
             const dateObj = new Date(slot.date);
             if (isNaN(dateObj.getTime())) {
                 throw new Error('Invalid date format');
             }
 
-            // Convert start time to minutes for easier comparison
             const [startHours, startMinutes] = slot.startTime.split(':').map(Number);
             const slotStartMinutes = startHours * 60 + startMinutes;
 
-            // Find any conflicting slots within 20 minutes before or after
             const conflicts = await Availability.findAll({
                 where: {
                     doctorId,
@@ -132,17 +127,14 @@ class DoctorService {
                 }
             });
 
-            // Delete any conflicting slots
             if (conflicts.length > 0) {
                 await Promise.all(conflicts.map(conflict => conflict.destroy()));
             }
 
-            // Calculate end time (20 minutes after start time)
             const endMinutes = (startMinutes + 20) % 60;
             const endHours = startHours + Math.floor((startMinutes + 20) / 60);
             const endTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}:00`;
 
-            // Create the new availability slot
             const [availability] = await Availability.upsert({
                 doctorId,
                 Date: dateObj,

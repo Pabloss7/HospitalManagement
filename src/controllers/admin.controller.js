@@ -5,7 +5,6 @@ const modifyDoctorInfo = async (req, res) => {
         const { doctorId } = req.params;
         const { name, age, gender, address, departmentId } = req.body;
         
-        // Find doctor with their current department
         const doctor = await User.findOne({
             where: {
                 id: doctorId,
@@ -18,7 +17,6 @@ const modifyDoctorInfo = async (req, res) => {
             return res.status(404).json({ message: 'Doctor not found' });
         }
 
-        // Prepare user data update
         const doctorData = { name, age, gender, address };
         for (const key in doctorData) {
             if (doctorData[key] === undefined) {
@@ -97,7 +95,7 @@ const getAllLogs = async (req, res) => {
         const logs = await Log.findAll({
             include: [{
                 model: User,
-                as: 'user',  // Add the alias to match the association
+                as: 'user',
                 attributes: ['name', 'email', 'role']
             }],
             order: [['timestamp', 'DESC']]

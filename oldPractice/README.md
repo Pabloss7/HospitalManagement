@@ -1,2 +1,0 @@
-# finalpractice-alu119380
-

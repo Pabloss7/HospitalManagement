@@ -2,7 +2,6 @@ const { MedicalRecord, User } = require('../models');
 
 class MedicalRecordRepository {
   async createMedicalRecord(recordData) {
-    // Ensure arrays are properly formatted
     const formattedData = {
       ...recordData,
       prescriptions: Array.isArray(recordData.prescriptions) ? recordData.prescriptions : [],
@@ -10,7 +9,6 @@ class MedicalRecordRepository {
       treatments: Array.isArray(recordData.treatments) ? recordData.treatments : []
     };
 
-    // Validate array contents
     this.validatePrescriptions(formattedData.prescriptions);
     this.validateTestResults(formattedData.testResults);
     this.validateTreatments(formattedData.treatments);
@@ -19,7 +17,6 @@ class MedicalRecordRepository {
   }
 
   async updateMedicalRecord(recordId, doctorId, updateData) {
-    // Find the record and verify doctor's ownership
     const record = await MedicalRecord.findOne({
       where: {
         id: recordId,
@@ -31,7 +28,6 @@ class MedicalRecordRepository {
       throw new Error('Medical record not found or you are not authorized to update it');
     }
 
-    // Ensure arrays are properly formatted
     const formattedData = {
       ...updateData,
       prescriptions: Array.isArray(updateData.prescriptions) ? updateData.prescriptions : record.prescriptions,
@@ -39,7 +35,6 @@ class MedicalRecordRepository {
       treatments: Array.isArray(updateData.treatments) ? updateData.treatments : record.treatments
     };
 
-    // Validate array contents if they are being updated
     if (Array.isArray(updateData.prescriptions)) {
       this.validatePrescriptions(formattedData.prescriptions);
     }
@@ -50,7 +45,6 @@ class MedicalRecordRepository {
       this.validateTreatments(formattedData.treatments);
     }
 
-    // Update the record
     await record.update(formattedData);
     return record;
   }

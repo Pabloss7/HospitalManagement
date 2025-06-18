@@ -39,7 +39,7 @@ class DoctorRepository {
                 },
                 {
                     model: Availability,
-                    as: 'availabilities',  // Changed to match the association alias
+                    as: 'availabilities', 
                     where: { isAvailable: true },
                     required: false
                 }

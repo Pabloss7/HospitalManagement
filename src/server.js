@@ -17,7 +17,6 @@ const startServer = async () => {
         // Sync database before starting the server
         await syncDatabase();
         
-        // Start your server
         app.listen(3000, () => {
             console.log(`Server is running on port 3000`);
         });

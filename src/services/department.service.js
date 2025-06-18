@@ -7,8 +7,7 @@ class DepartmentService {
     async createDepartment(departmentData) {
         try {
             const department = await Department.create(departmentData);
-            
-            // Log department creation
+
             await logAction(
                 'Department Created',
                 null,
@@ -73,22 +72,18 @@ class DepartmentService {
 
     async deleteDepartment(departmentId) {
         try {
-            // Check if department exists
             const department = await departmentRepository.getDepartmentById(departmentId);
             if (!department) {
                 throw { status: 404, message: 'Department not found' };
             }
 
-            // Check if there are doctors in the department
             const doctors = await departmentRepository.getDepartmentDoctors(departmentId);
             if (doctors.length > 0) {
                 throw { status: 400, message: 'Cannot delete department with assigned doctors' };
             }
 
-            // Delete the department
             await departmentRepository.deleteDepartment(departmentId);
-            
-            // Log department deletion
+
             await logAction(
                 'Department Deleted',
                 null,

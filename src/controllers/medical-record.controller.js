@@ -3,12 +3,10 @@ const medicalRecordService = require('../services/medical-record.service');
 class MedicalRecordController {
   async createMedicalRecord(req, res) {
     try {
-      // Validate that the doctor in the token matches the doctorId in the request
       if (req.user.id !== parseInt(req.body.doctorId) || req.user.role !== 'doctor') {
         return res.status(403).json({ error: 'Forbidden: Only doctors can create medical records' });
       }
 
-      // Validate that the patient in the params matches the patientId in the body
       if (parseInt(req.params.patientId) !== parseInt(req.body.patientId)) {
         return res.status(400).json({ error: 'Patient ID mismatch between URL and request body' });
       }
@@ -33,12 +31,10 @@ class MedicalRecordController {
 
   async updateMedicalRecord(req, res) {
     try {
-      // Validate that the doctor in the token matches the doctorId in the request
       if (req.user.id !== parseInt(req.body.doctorId) || req.user.role !== 'doctor') {
         return res.status(403).json({ error: 'Forbidden: Only doctors can update medical records' });
       }
 
-      // Validate that the patient in the params matches the patientId in the body
       if (parseInt(req.params.patientId) !== parseInt(req.body.patientId)) {
         return res.status(400).json({ error: 'Patient ID mismatch between URL and request body' });
       }
@@ -72,7 +68,6 @@ class MedicalRecordController {
 
   async getPatientRecords(req, res) {
     try {
-      // Validate that the patient in the token matches the patientId in the params
       if (req.user.id !== parseInt(req.params.patientId) || req.user.role !== 'patient') {
         return res.status(403).json({ error: 'Forbidden: You can only access your own medical records' });
       }

@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-// Import models
 const UserModel = require('./user.model');
 const DepartmentModel = require('./department.model');
 const DoctorDepartmentModel = require('./doctor-department.model');
@@ -10,7 +9,6 @@ const AppointmentModel = require('./appointment.model');
 const MedicalRecordModel = require('./medical-record.model');
 const LogModel = require('./log.model');
 
-// Initialize models
 const User = UserModel(sequelize);
 const Department = DepartmentModel(sequelize);
 const DoctorDepartment = DoctorDepartmentModel(sequelize);
@@ -19,7 +17,6 @@ const Appointment = AppointmentModel(sequelize);
 const MedicalRecord = MedicalRecordModel(sequelize);
 const Log = LogModel(sequelize);
 
-  // Add associations for appointments
   User.hasMany(Appointment, {
     foreignKey: 'patientId',
     as: 'patientAppointments',
@@ -56,7 +53,6 @@ const Log = LogModel(sequelize);
     as: 'appointment'
   });
 
- // Add associations for medical records
  User.hasMany(MedicalRecord, {
   foreignKey: 'patientId',
   as: 'patientMedicalRecords',
@@ -83,13 +79,11 @@ MedicalRecord.belongsTo(User, {
   as: 'doctor'
 });
 
-// Add associations for logs
 Log.belongsTo(User, {
     foreignKey: 'userId',
     as: 'user'
 });
 
-// Add associations for doctors and departments
 User.belongsToMany(Department, {
 through: DoctorDepartment,
 foreignKey: 'userId',
@@ -102,7 +96,6 @@ foreignKey: 'departmentId',
 otherKey: 'userId'
 });
 
-// Add associations for doctor availability
 User.hasMany(Availability, {
 foreignKey: 'doctorId',
 as: 'availabilities'
@@ -116,14 +109,13 @@ as: 'doctor'
 // Sync all models with the database
 const syncDatabase = async () => {
     try {
-        await sequelize.sync({ alter: true }); // This will create or update tables as needed
+        await sequelize.sync({ alter: true });
         console.log('Database synced successfully');
     } catch (error) {
         console.error('Error syncing database:', error);
     }
 };
 
-// Export models and sync function
 module.exports = {
     sequelize,
     User,

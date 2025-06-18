@@ -11,13 +11,12 @@ const logAction = async (action, userId, details) => {
         const detailsStr = details ? JSON.stringify(details) : null;
         
         await Log.create({
-            action: action.toString(), // Ensure action is a string
-            userId: userId ? Number(userId) : null, // Ensure userId is a number or null
+            action: action.toString(), 
+            userId: userId ? Number(userId) : null,
             details: detailsStr,
             timestamp: new Date()
         });
     } catch (error) {
-        // Fallback to console.log in case of database errors
         console.error('Error storing log:', error);
         console.log(`[${new Date().toISOString()}] ${action} by user ${userId}: ${JSON.stringify(details)}`);
     }

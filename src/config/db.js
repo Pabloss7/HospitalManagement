@@ -1,13 +1,12 @@
 const { Sequelize } = require('sequelize');
 
-// Create Sequelize instance
+
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: './hospital_management.db',
     logging: console.log
 });
 
-// Test the connection
 async function testConnection() {
     try {
         await sequelize.authenticate();

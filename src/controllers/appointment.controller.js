@@ -5,7 +5,6 @@ class AppointmentController {
         try {
             const { patientId, doctorId, timeSlotId } = req.body;
 
-            // Validate request body
             if (!patientId || !doctorId || !timeSlotId) {
                 return res.status(400).json({
                     error: 'Missing required fields'
@@ -61,9 +60,8 @@ class AppointmentController {
         try {
             const { appointmentId } = req.params;
             const { doctorId, NewSlotId } = req.body;
-            const patientId = req.user.id; // Get patient ID from JWT token
+            const patientId = req.user.id;
 
-            // Validate request body
             if (!doctorId || !NewSlotId) {
                 return res.status(400).json({
                     error: 'Missing required fields'

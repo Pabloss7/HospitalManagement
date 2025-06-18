@@ -38,7 +38,6 @@ const updateDoctorAvailability = async (req, res) => {
         const doctorId = Number(req.params.doctorId);
         const { availableSlots } = req.body;
 
-        // Verify the doctor is updating their own availability
         if (doctorId !== req.user.id) {
             return res.status(403).json({
                 message: 'You can only update your own availability'
@@ -74,7 +73,6 @@ const getAllDoctors = async (req, res) => {
     }
 };
 
-// Add to exports
 module.exports = {
     addAvailability,
     getAvailability,

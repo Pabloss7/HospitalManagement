@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
       autoIncrement: true
     },
     action: {
-      type: DataTypes.STRING(100), // Limit the string length
+      type: DataTypes.STRING(100), 
       allowNull: false
     },
     userId: {
