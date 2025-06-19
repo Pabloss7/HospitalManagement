@@ -26,4 +26,8 @@ router.get('/',
     doctorController.getAllDoctors
 );
 
+router.get('/department/:departmentId',
+    doctorController.getDoctorsByDepartment
+);
+
 module.exports = router;

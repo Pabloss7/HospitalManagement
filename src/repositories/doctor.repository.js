@@ -47,6 +47,23 @@ class DoctorRepository {
             distinct: true
         });
     }
+
+    async getDoctorsByDepartment(departmentId) {
+        try {
+            const doctors = await User.findAll({
+                include: [{
+                    model: Department,
+                    through: DoctorDepartment,
+                    where: { id: departmentId }
+                }],
+                where: { role: 'doctor' },
+                attributes: ['id', 'name', 'email', 'phone', 'address']
+            });
+            return doctors;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new DoctorRepository();

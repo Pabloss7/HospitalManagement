@@ -167,6 +167,15 @@ class DoctorService {
             }))
         }));
     }
+
+    async getDoctorsByDepartment(departmentId) {
+        try {
+            const doctors = await doctorRepository.getDoctorsByDepartment(departmentId);
+            return doctors;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new DoctorService();

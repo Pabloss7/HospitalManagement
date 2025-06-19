@@ -73,9 +73,21 @@ const getAllDoctors = async (req, res) => {
     }
 };
 
+const getDoctorsByDepartment = async (req, res) => {
+    try {
+        const { departmentId } = req.params;
+        const doctors = await doctorService.getDoctorsByDepartment(departmentId);
+        res.status(200).json(doctors);
+    } catch (error) {
+        console.error('Error retrieving doctors by department:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     addAvailability,
     getAvailability,
     updateDoctorAvailability,
-    getAllDoctors
+    getAllDoctors,
+    getDoctorsByDepartment
 };

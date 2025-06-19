@@ -941,6 +941,49 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get doctors by department",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NTAxMDQ0NjgsImV4cCI6MTc1MDE5MDg2OH0._UloOXMkLWQY_RXTJvyLuBuxnyy-yDR428InuwHriE4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/hospitalManagement/doctors/department/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"hospitalManagement",
+						"doctors",
+						"department",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

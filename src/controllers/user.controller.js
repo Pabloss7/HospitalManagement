@@ -27,11 +27,14 @@ const createPatient = async (req, res) => {
 };
 const createDoctor = async (req, res) => {
     try {
-        const { name, email, password, department, age, gender, address, phone } = req.body;
-        const departmentDB = await departmentService.getDepartmentByName(department); 
-        if(!department || !departmentDB){
-            return res.status(400).json({ message: 'Invalid department' });
+        const { name, email, password, departmentId, age, gender, address, phone } = req.body;
+        
+        // Validate department exists
+        const department = await departmentService.getDepartmentById(departmentId);
+        if (!departmentId || !department) {
+            return res.status(400).json({ message: 'Invalid department ID' });
         }
+
         const userData = { 
             name, 
             email, 
@@ -40,12 +43,12 @@ const createDoctor = async (req, res) => {
             gender,
             address,
             phone,
-            role: 'doctor', 
-            department 
+            role: 'doctor'
         };
-
         const user = await userService.createUser(userData);
-        await departmentService.assignDoctorToDepartment(user.id, departmentDB.id);
+        await departmentService.assignDoctorToDepartment(user.id, departmentId);
+     
+        
         res.status(201).json(user);
     } catch (error) {
         if (error.name === 'SequelizeUniqueConstraintError') {
@@ -53,7 +56,7 @@ const createDoctor = async (req, res) => {
         }
         res.status(500).json({ message: 'Error creating user', error: error.message });
     }
-}
+};
 const createAdmin = async (req, res) => {
     try {
         const { name, email, password, age, gender, address, phone } = req.body;

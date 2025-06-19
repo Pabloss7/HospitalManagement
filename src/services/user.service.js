@@ -97,6 +97,23 @@ class UserService {
             throw error;
         }
     }
+
+    async getUserWithDepartment(userId) {
+        try {
+            const user = await User.findOne({
+                where: { id: userId },
+                include: [{
+                    model: Department,
+                    through: DoctorDepartment,
+                    attributes: ['id', 'name']
+                }],
+                attributes: ['id', 'name', 'email', 'role', 'age', 'gender', 'phone', 'address']
+            });
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new UserService();

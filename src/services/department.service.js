@@ -98,6 +98,15 @@ class DepartmentService {
             throw error;
         }
     }
+    async getDepartmentById(departmentId) {
+        try {
+            const department = await Department.findByPk(departmentId);
+            return department.name;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new DepartmentService();
+
